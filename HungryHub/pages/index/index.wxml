@@ -1,0 +1,82 @@
+<!--pages/index/index.wxml-->
+<view class="container">
+  <!-- 顶部定位栏 -->
+  <view class="header">
+    <view class="location" bindtap="getLocation">
+      <image class="location-icon" src="/images/location.png" mode="aspectFit"></image>
+      <text class="location-text">{{location}}</text>
+      <image class="arrow-icon" src="/images/arrow-down.png" mode="aspectFit"></image>
+    </view>
+    <view class="search-box" bindtap="goSearch">
+      <image class="search-icon" src="/images/search.png" mode="aspectFit"></image>
+      <text class="search-placeholder">搜索商家或美食</text>
+    </view>
+  </view>
+
+  <!-- 分类快捷入口 -->
+  <view class="categories">
+    <view class="cate-item" wx:for="{{quickCategories}}" wx:key="id" bindtap="filterByCate" data-cate="{{item.name}}">
+      <image class="cate-icon" src="{{item.icon}}" mode="aspectFit"></image>
+      <text class="cate-name">{{item.name}}</text>
+    </view>
+  </view>
+
+  <!-- 广告横幅 -->
+  <view class="banner">
+    <swiper autoplay circular interval="3000" indicator-dots indicator-color="rgba(255,255,255,0.5)" indicator-active-color="#fff">
+      <swiper-item wx:for="{{banners}}" wx:key="id">
+        <image class="banner-img" src="{{item.img}}" mode="aspectFill"></image>
+      </swiper-item>
+    </swiper>
+  </view>
+
+  <!-- 商家列表 -->
+  <view class="shop-section">
+    <view class="section-header">
+      <text class="section-title">附近商家</text>
+      <view class="filter-bar">
+        <text class="filter-item {{filterType==='default'?'active':''}}" bindtap="setFilter" data-type="default">综合排序</text>
+        <text class="filter-item {{filterType==='sales'?'active':''}}" bindtap="setFilter" data-type="sales">销量最高</text>
+        <text class="filter-item {{filterType==='rating'?'active':''}}" bindtap="setFilter" data-type="rating">评分最高</text>
+        <text class="filter-item {{filterType==='distance'?'active':''}}" bindtap="setFilter" data-type="distance">距离最近</text>
+      </view>
+    </view>
+
+    <view class="shop-list">
+      <view class="shop-card" wx:for="{{filteredShops}}" wx:key="id" bindtap="goShop" data-id="{{item.id}}">
+        <image class="shop-logo" src="{{item.logo}}" mode="aspectFill"></image>
+        <view class="shop-info">
+          <view class="shop-name-row">
+            <text class="shop-name">{{item.name}}</text>
+            <text class="shop-tag" wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this">{{tag}}</text>
+          </view>
+          <view class="shop-meta">
+            <view class="meta-left">
+              <text class="star">⭐</text>
+              <text class="rating">{{item.rating}}</text>
+              <text class="sales">月售{{item.monthlySales}}</text>
+            </view>
+            <view class="meta-right">
+              <text class="delivery-time">{{item.deliveryTime}}</text>
+              <text class="distance">{{item.distance}}</text>
+            </view>
+          </view>
+          <view class="shop-bottom">
+            <text class="min-price">¥{{item.minPrice}}起送</text>
+            <text class="delivery-fee">配送费¥{{item.deliveryFee}}</text>
+          </view>
+          <view class="shop-notice" wx:if="{{item.notice}}">
+            <text class="notice-text">{{item.notice}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="loading-more" wx:if="{{loading}}">
+      <text>加载中...</text>
+    </view>
+    <view class="no-more" wx:if="{{!hasMore && filteredShops.length > 0}}">
+      <text>— 已经到底了 —</text>
+    </view>
+  </view>
+</view>

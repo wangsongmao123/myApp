@@ -1,0 +1,51 @@
+<!--pages/order/order.wxml-->
+<view class="container">
+  <!-- 订单状态Tab -->
+  <view class="order-tabs">
+    <view class="tab-item {{activeTab==='all'?'active':''}}" bindtap="switchTab" data-tab="all">全部</view>
+    <view class="tab-item {{activeTab==='pending'?'active':''}}" bindtap="switchTab" data-tab="pending">待支付</view>
+    <view class="tab-item {{activeTab==='delivering'?'active':''}}" bindtap="switchTab" data-tab="delivering">配送中</view>
+    <view class="tab-item {{activeTab==='completed'?'active':''}}" bindtap="switchTab" data-tab="completed">已完成</view>
+  </view>
+
+  <!-- 订单列表 -->
+  <view class="order-list" wx:if="{{filteredOrders.length > 0}}">
+    <view class="order-card" wx:for="{{filteredOrders}}" wx:key="id">
+      <!-- 订单头部 -->
+      <view class="order-header">
+        <view class="order-shop">
+          <image class="order-shop-logo" src="{{item.shopLogo}}" mode="aspectFill"></image>
+          <text class="order-shop-name">{{item.shopName}}</text>
+        </view>
+        <text class="order-status {{item.status}}">{{item.statusText}}</text>
+      </view>
+
+      <!-- 订单商品 -->
+      <view class="order-goods">
+        <text class="order-goods-item" wx:for="{{item.goods}}" wx:key="id">{{item.name}} x{{item.count}}</text>
+      </view>
+
+      <!-- 订单底部 -->
+      <view class="order-footer">
+        <text class="order-time">{{item.createTime}}</text>
+        <view class="order-bottom-right">
+          <text class="order-total">合计 ¥{{item.totalPrice}}</text>
+          <view class="order-actions">
+            <view class="order-btn secondary" wx:if="{{item.status==='pending'}}" bindtap="cancelOrder" data-id="{{item.id}}">取消订单</view>
+            <view class="order-btn primary" wx:if="{{item.status==='pending'}}" bindtap="payOrder" data-id="{{item.id}}">去支付</view>
+            <view class="order-btn primary" wx:if="{{item.status==='delivering'}}" bindtap="confirmOrder" data-id="{{item.id}}">确认收货</view>
+            <view class="order-btn secondary" wx:if="{{item.status==='completed'}}" bindtap="reorder" data-shopid="{{item.shopId}}">再来一单</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空订单 -->
+  <view class="empty-state" wx:else>
+    <image class="empty-img" src="/images/empty-order.png" mode="aspectFit"></image>
+    <text class="empty-text">暂无订单</text>
+    <text class="empty-tip">快去下单美食吧</text>
+    <view class="go-order-btn" bindtap="goHome">去逛逛</view>
+  </view>
+</view>

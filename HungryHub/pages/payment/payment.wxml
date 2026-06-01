@@ -1,0 +1,96 @@
+<!--pages/payment/payment.wxml-->
+<view class="container">
+  <!-- 收货地址 -->
+  <view class="section address-section" bindtap="goAddress">
+    <view class="address-content" wx:if="{{address}}">
+      <view class="address-top">
+        <image class="addr-icon" src="/images/location-fill.png" mode="aspectFit"></image>
+        <view class="addr-info">
+          <text class="addr-detail">{{address.address}}</text>
+          <view class="addr-user">
+            <text class="addr-name">{{address.name}}</text>
+            <text class="addr-phone">{{address.phone}}</text>
+          </view>
+        </view>
+        <image class="addr-arrow" src="/images/arrow-right.png" mode="aspectFit"></image>
+      </view>
+    </view>
+    <view class="no-address" wx:else bindtap="goAddress">
+      <image class="addr-icon" src="/images/location-fill.png" mode="aspectFit"></image>
+      <text class="no-addr-text">请添加收货地址</text>
+      <image class="addr-arrow" src="/images/arrow-right.png" mode="aspectFit"></image>
+    </view>
+  </view>
+
+  <!-- 送达时间 -->
+  <view class="section delivery-section">
+    <text class="section-label">预计送达</text>
+    <text class="section-value">{{shop.deliveryTime}}</text>
+  </view>
+
+  <!-- 商品列表 -->
+  <view class="section goods-section">
+    <view class="goods-header">
+      <image class="shop-mini-logo" src="{{shop.logo}}" mode="aspectFill"></image>
+      <text class="shop-mini-name">{{shop.name}}</text>
+    </view>
+    <view class="goods-item" wx:for="{{cartList}}" wx:key="id">
+      <text class="goods-name">{{item.name}}</text>
+      <view class="goods-right">
+        <text class="goods-count">x{{item.count}}</text>
+        <text class="goods-price">¥{{item.subtotal}}</text>
+      </view>
+    </view>
+    <view class="goods-footer">
+      <text class="packing-fee">包装费</text>
+      <text class="packing-price">¥{{packingFee}}</text>
+    </view>
+  </view>
+
+  <!-- 备注 -->
+  <view class="section remark-section">
+    <text class="section-label">备注</text>
+    <input class="remark-input" placeholder="选填, 如需要餐具、免辣等" value="{{remark}}" bindinput="onRemarkInput"/>
+  </view>
+
+  <!-- 优惠 -->
+  <view class="section discount-section">
+    <text class="section-label">优惠券</text>
+    <view class="discount-right">
+      <text class="discount-text" wx:if="{{discount > 0}}">-¥{{discount}}</text>
+      <text class="no-discount" wx:else>暂无可用优惠券</text>
+      <image class="addr-arrow" src="/images/arrow-right.png" mode="aspectFit"></image>
+    </view>
+  </view>
+
+  <!-- 价格明细 -->
+  <view class="section price-detail">
+    <view class="price-row">
+      <text>商品小计</text>
+      <text>¥{{goodsTotal}}</text>
+    </view>
+    <view class="price-row">
+      <text>配送费</text>
+      <text>¥{{shop.deliveryFee}}</text>
+    </view>
+    <view class="price-row">
+      <text>包装费</text>
+      <text>¥{{packingFee}}</text>
+    </view>
+    <view class="price-row" wx:if="{{discount > 0}}">
+      <text>优惠券</text>
+      <text class="discount-val">-¥{{discount}}</text>
+    </view>
+  </view>
+
+  <!-- 底部提交 -->
+  <view class="bottom-bar">
+    <view class="total-info">
+      <text class="total-label">合计</text>
+      <text class="total-price">¥{{totalPrice}}</text>
+    </view>
+    <view class="submit-btn" bindtap="submitOrder">
+      提交订单
+    </view>
+  </view>
+</view>

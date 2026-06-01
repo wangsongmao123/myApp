@@ -1,0 +1,62 @@
+<!--pages/search/search.wxml-->
+<view class="container">
+  <!-- 搜索框 -->
+  <view class="search-header">
+    <view class="search-input-box">
+      <image class="search-icon" src="/images/search.png" mode="aspectFit"></image>
+      <input class="search-input" placeholder="搜索商家或美食" value="{{keyword}}" bindinput="onInput" bindconfirm="doSearch" confirm-type="search" focus="{{autoFocus}}"/>
+      <image class="clear-icon" src="/images/close.png" mode="aspectFit" wx:if="{{keyword}}" bindtap="clearInput"></image>
+    </view>
+    <text class="cancel-btn" bindtap="goBack">取消</text>
+  </view>
+
+  <!-- 搜索历史 -->
+  <view class="search-history" wx:if="{{!keyword && history.length > 0 && results.length === 0}}">
+    <view class="history-header">
+      <text class="history-title">搜索历史</text>
+      <text class="clear-history" bindtap="clearHistory">清空</text>
+    </view>
+    <view class="history-tags">
+      <text class="history-tag" wx:for="{{history}}" wx:key="*this" bindtap="searchHistory" data-keyword="{{item}}">{{item}}</text>
+    </view>
+  </view>
+
+  <!-- 热门搜索 -->
+  <view class="hot-search" wx:if="{{!keyword && results.length === 0}}">
+    <view class="hot-header">
+      <text class="hot-title">🔥 热门搜索</text>
+    </view>
+    <view class="hot-tags">
+      <text class="hot-tag" wx:for="{{hotWords}}" wx:key="*this" bindtap="searchHot" data-keyword="{{item}}">{{item}}</text>
+    </view>
+  </view>
+
+  <!-- 搜索结果 -->
+  <view class="search-results" wx:if="{{keyword && results.length > 0}}">
+    <view class="result-header">
+      <text class="result-count">找到 {{results.length}} 个结果</text>
+    </view>
+    <view class="shop-list">
+      <view class="shop-card" wx:for="{{results}}" wx:key="id" bindtap="goShop" data-id="{{item.id}}">
+        <image class="shop-logo" src="{{item.logo}}" mode="aspectFill"></image>
+        <view class="shop-info">
+          <text class="shop-name">{{item.name}}</text>
+          <view class="shop-meta">
+            <text class="star">⭐ {{item.rating}}</text>
+            <text class="sales">月售{{item.monthlySales}}</text>
+          </view>
+          <view class="shop-tags">
+            <text class="tag" wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this">{{tag}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空结果 -->
+  <view class="empty-result" wx:if="{{keyword && results.length === 0}}">
+    <image class="empty-img" src="/images/empty-search.png" mode="aspectFit"></image>
+    <text class="empty-text">没有找到相关商家</text>
+    <text class="empty-tip">换个关键词试试吧</text>
+  </view>
+</view>
