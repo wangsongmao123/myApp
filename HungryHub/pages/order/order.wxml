@@ -14,7 +14,7 @@
       <!-- 订单头部 -->
       <view class="order-header">
         <view class="order-shop">
-          <image class="order-shop-logo" src="{{item.shopLogo}}" mode="aspectFill"></image>
+          <image class="order-shop-logo" src="{{item.shopLogo}}" mode="aspectFill" lazy-load></image>
           <text class="order-shop-name">{{item.shopName}}</text>
         </view>
         <text class="order-status {{item.status}}">{{item.statusText}}</text>

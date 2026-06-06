@@ -16,7 +16,7 @@
   <!-- 分类快捷入口 -->
   <view class="categories">
     <view class="cate-item" wx:for="{{quickCategories}}" wx:key="id" bindtap="filterByCate" data-cate="{{item.name}}">
-      <image class="cate-icon" src="{{item.icon}}" mode="aspectFit"></image>
+      <image class="cate-icon" src="{{item.icon}}" mode="aspectFit" lazy-load></image>
       <text class="cate-name">{{item.name}}</text>
     </view>
   </view>
@@ -25,7 +25,7 @@
   <view class="banner">
     <swiper autoplay circular interval="3000" indicator-dots indicator-color="rgba(255,255,255,0.5)" indicator-active-color="#fff">
       <swiper-item wx:for="{{banners}}" wx:key="id">
-        <image class="banner-img" src="{{item.img}}" mode="aspectFill"></image>
+        <image class="banner-img" src="{{item.img}}" mode="aspectFill" lazy-load></image>
       </swiper-item>
     </swiper>
   </view>
@@ -44,7 +44,7 @@
 
     <view class="shop-list">
       <view class="shop-card" wx:for="{{filteredShops}}" wx:key="id" bindtap="goShop" data-id="{{item.id}}">
-        <image class="shop-logo" src="{{item.logo}}" mode="aspectFill"></image>
+        <image class="shop-logo" src="{{item.logo}}" mode="aspectFill" lazy-load></image>
         <view class="shop-info">
           <view class="shop-name-row">
             <text class="shop-name">{{item.name}}</text>

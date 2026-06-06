@@ -41,7 +41,7 @@
     <view class="cate-section" wx:for="{{shop.categories}}" wx:key="*this" wx:for-index="cateIdx" id="cate-{{cateIdx}}">
       <view class="cate-title">{{item}}</view>
       <view class="food-item" wx:for="{{shop.foods}}" wx:for-item="food" wx:key="id" wx:if="{{food.cate===item}}">
-        <image class="food-img" src="{{food.img}}" mode="aspectFill"></image>
+        <image class="food-img" src="{{food.img}}" mode="aspectFill" lazy-load></image>
         <view class="food-info">
           <text class="food-name">{{food.name}}</text>
           <text class="food-desc">{{food.desc}}</text>

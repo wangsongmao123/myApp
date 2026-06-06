@@ -38,7 +38,7 @@
     </view>
     <view class="shop-list">
       <view class="shop-card" wx:for="{{results}}" wx:key="id" bindtap="goShop" data-id="{{item.id}}">
-        <image class="shop-logo" src="{{item.logo}}" mode="aspectFill"></image>
+        <image class="shop-logo" src="{{item.logo}}" mode="aspectFill" lazy-load></image>
         <view class="shop-info">
           <text class="shop-name">{{item.name}}</text>
           <view class="shop-meta">

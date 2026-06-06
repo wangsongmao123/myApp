@@ -8,6 +8,7 @@
 ## 📑 目录 / 목차
 
 - [功能特性 / 기능 특성](#-功能特性--기능-특성)
+- [使用的 AI 工具 / 사용된 AI 도구](#-使用的-ai-工具--사용된-ai-도구)
 - [项目结构 / 프로젝트 구조](#-项目结构--프로젝트-구조)
 - [页面路由与导航 / 페이지 라우팅 및 네비게이션](#-页面路由与导航--페이지-라우팅-및-네비게이션)
 - [核心业务逻辑 / 핵심 비즈니스 로직](#-核心业务逻辑--핵심-비즈니스-로직)
@@ -15,6 +16,7 @@
 - [技术栈详解 / 기술 스택 상세](#-技术栈详解--기술-스택-상세)
 - [UI/UX 设计 / UI/UX 디자인](#-uiux-设计--uiux-디자인)
 - [图片资源清单 / 이미지 리소스 목록](#-图片资源清单--이미지-리소스-목록)
+- [运行截图 / 실행 스크린샷](#-运行截图--실행-스크린샷)
 - [使用说明 / 사용 설명](#-使用说明--사용-설명)
 - [开发计划 / 개발 계획](#-开发计划--개발-계획)
 
@@ -99,6 +101,16 @@
 
 ---
 
+## 🤖 使用的 AI 工具 / 사용된 AI 도구
+
+| 工具 / 도구 | 用途 / 용도 | 说明 / 설명 |
+|:---|:---|:---|
+| **CodeBuddy (Auto)** | AI 编程助手 / AI 프로그래밍 어시스턴트 | 辅助完成项目代码编写、Supabase 数据库设计与数据迁移、文档生成等全流程开发 / 프로젝트 코드 작성, Supabase 데이터베이스 설계 및 데이터 마이그레이션, 문서 생성 등 전체 개발 프로세스 지원 |
+| **Supabase** | 后端云数据库 / 백엔드 클라우드 데이터베이스 | 提供 PostgreSQL 数据库服务，存储商家、菜品、分类等核心业务数据，通过 REST API 与小程序前端交互 / PostgreSQL 데이터베이스 서비스 제공, 상점·메뉴·카테고리 등 핵심 비즈니스 데이터 저장, REST API를 통해 미니프로그램 프론트엔드와 연동 |
+| **微信开发者工具 / 위챗 개발자 도구** | 小程序开发调试 / 미니프로그램 개발 디버깅 | 提供 WXML/WXSS/JS 编译预览、真机调试、性能分析等功能 / WXML/WXSS/JS 컴파일 미리보기, 실기기 디버깅, 성능 분석 등 기능 제공 |
+
+---
+
 ## 📁 项目结构 / 프로젝트 구조
 
 ```
@@ -111,7 +123,8 @@ HungryHub/
 ├── README.md                       # 项目说明文档（本文件）/ 프로젝트 설명 문서 (본 파일)
 │
 ├── utils/                          # 工具模块 / 유틸리티 모듈
-│   └── mock.js                     # 模拟数据（6家商家 × 36道菜品 + 地址初始数据）/ 모의 데이터 (6개 상점 × 36개 메뉴 + 초기 주소 데이터)
+│   ├── supabase.js                 # Supabase REST API 封装（商家/菜品/分类/搜索）/ Supabase REST API 래퍼 (상점/메뉴/카테고리/검색)
+│   └── mock.js                     # 本地降级数据（6家商家 × 36道菜品 + 地址初始数据）/ 로컬 폴백 데이터 (6개 상점 × 36개 메뉴 + 초기 주소 데이터)
 │
 ├── images/                         # 图片资源目录（81 张 PNG 图片）/ 이미지 리소스 디렉토리 (81장 PNG 이미지)
 │   ├── tab-home.png / tab-home-active.png              # TabBar 首页图标 / TabBar 홈 아이콘
@@ -273,14 +286,41 @@ HungryHub/
 ## 🔄 数据流架构 / 데이터 흐름 아키텍처
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                        app.js (全局)                         │
-│  ┌──────────┐  ┌──────────┐  ┌──────────────┐  ┌─────────┐ │
-│  │ userInfo │  │   cart   │  │ currentShop  │  │ address │ │
-│  └────┬─────┘  └────┬─────┘  └──────┬───────┘  └────┬────┘ │
-│       │             │               │               │       │
-│  wx.Storage    wx.Storage      mock.js         wx.Storage  │
-└───────┼─────────────┼───────────────┼───────────────┼───────┘
+┌──────────────────────────────────────────────────────────────┐
+│                     Supabase Cloud (PostgreSQL)               │
+│  ┌──────────┐  ┌──────────────┐  ┌──────────┐               │
+│  │  shops   │  │  categories  │  │  foods   │               │
+│  │  商家表  │  │   分类表     │  │  菜品表  │               │
+│  └────┬─────┘  └──────┬───────┘  └────┬─────┘               │
+│       │               │               │                      │
+│  ┌────▼───────────────▼───────────────▼──────┐               │
+│  │          REST API (HTTPS + Anon Key)       │               │
+│  │  getShops / getShopById / getCategories    │               │
+│  │  getFoods / searchShops / searchFoods      │               │
+│  └───────────────────┬───────────────────────┘               │
+└──────────────────────┼──────────────────────────────────────┘
+                       │
+              ┌────────▼────────┐
+              │  utils/supabase │  ← 字段名转换 (下划线→驼峰)
+              │    .js          │     필드명 변환 (snake_case→camelCase)
+              └────────┬────────┘
+                       │
+         ┌─────────────┼─────────────┐
+         │ 成功 / 성공  │             │ 失败 / 실패
+         ▼              │             ▼
+   真实后台数据          │       utils/mock.js
+   실제 백엔드 데이터    │       로컬 폴백 데이터
+         │              │             │
+         └──────────────┼─────────────┘
+                        │
+┌───────────────────────▼──────────────────────────────────────┐
+│                     app.js (全局状态)                          │
+│  ┌──────────┐  ┌──────────┐  ┌──────────────┐  ┌─────────┐  │
+│  │ userInfo │  │   cart   │  │ currentShop  │  │ address │  │
+│  └────┬─────┘  └────┬─────┘  └──────┬───────┘  └────┬────┘  │
+│       │             │               │               │        │
+│  wx.Storage    wx.Storage    Supabase/mock      wx.Storage   │
+└───────┼─────────────┼───────────────┼───────────────┼────────┘
         │             │               │               │
    ┌────▼────┐   ┌───▼────┐   ┌─────▼──────┐   ┌───▼─────┐
    │  mine   │   │  shop  │   │  payment   │   │ address │
@@ -289,15 +329,17 @@ HungryHub/
                          │
                     ┌────▼────┐
                     │  order  │
-                    │ 订单管理│
+                    │ 订单管理 │
                     └─────────┘
 ```
 
 **数据流向 / 데이터 흐름：**
-1. **mock.js** → 提供静态商家和菜品数据，通过 `require` 引入各页面
-2. **app.globalData** → 全局状态中心，管理购物车、用户信息、当前商家、地址
-3. **wx.Storage** → 持久化存储层，购物车、订单、地址、用户信息、搜索历史均持久化
-4. **页面间通信** → 通过 URL 参数（`options.id`、`options.keyword`）传递上下文
+1. **Supabase (PostgreSQL)** → 提供商家、分类、菜品等核心业务数据，通过 REST API 访问 / 상점, 카테고리, 메뉴 등 핵심 비즈니스 데이터 제공, REST API를 통해 접근
+2. **utils/supabase.js** → 封装 Supabase REST API 调用，执行字段名下划线→驼峰转换，请求失败时自动抛出异常供上层降级 / Supabase REST API 호출을 캡슐화, 필드명 snake_case→camelCase 변환, 요청 실패 시 자동으로 예외를 발생시켜 상위 계층에서 폴백 처리
+3. **utils/mock.js** → 降级数据源，Supabase 不可用时自动切换本地静态数据 / 폴백 데이터 소스, Supabase 사용 불가 시 자동으로 로컬 정적 데이터로 전환
+4. **app.globalData** → 全局状态中心，管理购物车、用户信息、当前商家、地址 / 전역 상태 센터, 장바구니, 사용자 정보, 현재 상점, 주소 관리
+5. **wx.Storage** → 持久化存储层，购物车、订单、地址、用户信息、搜索历史均持久化 / 영속화 저장 계층, 장바구니, 주문, 주소, 사용자 정보, 검색 기록 모두 영속화
+6. **页面间通信 / 페이지 간 통신** → 通过 URL 参数（`options.id`、`options.keyword`）和 `app.globalData.currentShop` 传递上下文
 
 ---
 
@@ -334,6 +376,13 @@ HungryHub/
 | `wx.getStorageSync(key)` | 全局读取 | `cart`, `orders`, `addresses`, `address`, `userInfo`, `searchHistory`, `orderTab` |
 | `wx.setStorageSync(key, data)` | 全局写入 | 同上 / 상동 |
 | `wx.removeStorageSync(key)` | mine.js, search.js | `userInfo`, `searchHistory` |
+
+#### 网络请求 / 네트워크 요청
+
+| API | 使用页面 / 사용 페이지 | 说明 / 설명 |
+|:---|:---|:---|
+| `wx.request()` | index.js, shop.js, search.js | 通过 `utils/supabase.js` 封装调用 Supabase REST API / `utils/supabase.js`를 통해 Supabase REST API 호출 |
+
 
 #### 用户与设备 / 사용자 및 디바이스
 
@@ -390,14 +439,56 @@ HungryHub/
 | **字体栈 / 폰트 스택** | `-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif` | 系统原生字体优先 |
 | **Sticky 定位 / 스티키 포지셔닝** | `position: sticky` | 商家分类导航吸附顶部 |
 
-### 数据模拟策略 / 데이터 모의 전략
+### 数据策略 / 데이터 전략
 
-| 模块 / 모듈 | 数据量 / 데이터량 | 模拟方式 / 모의 방식 |
+#### Supabase 后台数据 / Supabase 백엔드 데이터
+
+| 数据表 / 테이블 | 字段 / 필드 | 用途 / 용도 |
 |:---|:---|:---|
-| 商家数据 / 상점 데이터 | 6 家 × 平均 6 道菜品 = 36 项 / 6개 × 평균 6메뉴 = 36항목 | `mock.js` 静态数组，通过 `require` 引入 |
-| 网络延迟 / 네트워크 지연 | 500ms ~ 1500ms | `setTimeout` 模拟异步加载 |
-| 订单数据 / 주문 데이터 | 用户运行时动态生成 / 사용자 런타임 동적 생성 | `wx.Storage` 持久化存储 |
-| 地址数据 / 주소 데이터 | 1 条默认 + 用户动态添加 / 1개 기본 + 사용자 동적 추가 | `wx.Storage` 持久化存储 |
+| `shops` | id, name, logo, rating, monthly_sales, min_price, delivery_fee, delivery_time, distance, tags, notice | 商家信息 / 상점 정보 |
+| `categories` | id, shop_id, name, sort_order | 商家菜品分类 / 상점 메뉴 카테고리 |
+| `foods` | id, shop_id, name, price, sales, img, description, category_name | 菜品详情 / 메뉴 상세 |
+
+**Supabase API 封装（`utils/supabase.js`）/ Supabase API 래퍼：**
+
+| 函数 / 함수 | REST 端点 / 엔드포인트 | 使用页面 / 사용 페이지 |
+|:---|:---|:---|
+| `getShops()` | `GET /rest/v1/shops?select=*&order=id.asc` | index.js (首页) |
+| `getShopById(id)` | `GET /rest/v1/shops?id=eq.{id}&select=*` | shop.js (商家详情) |
+| `getCategories(shopId)` | `GET /rest/v1/categories?shop_id=eq.{shopId}&select=*&order=sort_order.asc` | shop.js (商家详情) |
+| `getFoods(shopId)` | `GET /rest/v1/foods?shop_id=eq.{shopId}&select=*&order=id.asc` | shop.js (商家详情) |
+| `searchShops(keyword)` | `GET /rest/v1/shops?or=(name.ilike.{keyword},tags.cs.{keyword})&select=*&order=rating.desc` | search.js (搜索) |
+| `searchFoods(keyword)` | `GET /rest/v1/foods?or=(name.ilike.{keyword},description.ilike.{keyword})&select=*,shops(name,logo)&order=sales.desc` | search.js (搜索) |
+
+#### 优雅降级机制 / 우아한 폴백 메커니즘
+
+所有使用 Supabase 的页面均实现 `try-catch` 降级策略：Supabase 请求成功 → 使用真实后台数据；请求失败（网络异常/Supabase 不可用）→ 自动降级至 `mock.js` 本地静态数据，确保小程序始终可运行。
+
+Supabase를 사용하는 모든 페이지는 `try-catch` 폴백 전략을 구현합니다: Supabase 요청 성공 → 실제 백엔드 데이터 사용; 요청 실패(네트워크 오류/Supabase 사용 불가) → 자동으로 `mock.js` 로컬 정적 데이터로 폴백, 미니프로그램이 항상 실행 가능하도록 보장합니다.
+
+#### 本地存储数据 / 로컬 저장 데이터
+
+| 模块 / 모듈 | 数据量 / 데이터량 | 存储方式 / 저장 방식 |
+|:---|:---|:---|
+| 商家/分类/菜品数据 | Supabase: 动态获取, Mock: 6家×36菜品 | Supabase REST API + mock.js 降级 |
+| 订单数据 / 주문 데이터 | 用户运行时动态生成 | `wx.Storage` 持久化存储 |
+| 地址数据 / 주소 데이터 | 1 条默认 + 用户动态添加 | `wx.Storage` 持久化存储 |
+| 购物车数据 / 장바구니 데이터 | 用户运行时动态管理 | `app.globalData` + `wx.Storage` 双写 |
+| 搜索历史 / 검색 기록 | 最近 10 条 | `wx.Storage` 持久化存储 |
+
+#### 字段名映射 / 필드명 매핑
+
+Supabase (PostgreSQL) 使用下划线命名，前端统一转换为驼峰命名：
+
+Supabase (PostgreSQL)는 snake_case를 사용하며, 프론트엔드는 camelCase로 통일 변환합니다:
+
+| Supabase 字段 | 前端字段 | 
+|:---|:---|
+| `monthly_sales` | `monthlySales` |
+| `min_price` | `minPrice` |
+| `delivery_fee` | `deliveryFee` |
+| `delivery_time` | `deliveryTime` |
+| `category_name` | `cate` |
 
 ---
 
@@ -491,6 +582,52 @@ HungryHub/
 
 ---
 
+## 📸 运行截图 / 실행 스크린샷
+
+### 🏠 首页 / 홈
+
+<img src="images/screenshots/home.png" alt="首页 - 附近商家列表、分类入口、Banner 轮播" style="zoom:50%;" />
+
+> *首页展示定位选择、8 大分类快捷入口、Banner 广告轮播、附近商家列表（含评分/月销量/配送信息/排序）及底部 TabBar 导航*  
+> *홈 페이지는 위치 선택, 8대 카테고리 바로가기, 배너 광고 슬라이드, 근처 상점 목록(평점/월 판매량/배달 정보/정렬 포함) 및 하단 TabBar 네비게이션을 표시합니다*
+
+### 🏪 商家详情 / 상점 상세
+
+<img src="images/screenshots/shop_detail.png" alt="商家详情 - 幸福西饼屋菜品分类与菜单列表" style="zoom:50%;" />
+
+> *商家详情页：毛玻璃头部背景 + 分类导航（热销推荐/经典蛋糕/面包吐司/饮品甜点）+ 菜品卡片（图片/名称/描述/月销量/价格）+ 底部购物车栏实时更新总价*  
+> *상점 상세 페이지: 글래스모피즘 헤더 배경 + 카테고리 네비게이션(추천/케이크/빵/음료) + 메뉴 카드(이미지/이름/설명/월 판매량/가격) + 하단 장바구니 바 실시간 총금액 업데이트*
+
+### 🛒 购物车 / 장바구니
+
+<img src="images/screenshots/cart.png" alt="购物车弹窗 - 商品明细与金额计算" style="zoom: 50%;" />
+
+> *点击底部购物车栏展开弹窗，展示已添加商品清单（名称/单价/数量/小计）、商品小计与合计金额、差价提示及"去结算"按钮*  
+> *하단 장바구니 바 클릭 시 팝업 확장, 추가된 상품 목록(이름/단가/수량/소계), 상품 소계 및 합계 금액, 차액 안내 및 "결제하기" 버튼 표시*
+
+### 💳 下单结算 / 주문 결제
+
+<img src="images/screenshots/checkout.png" alt="确认订单 - 收货地址、商品清单、价格明细" style="zoom:50%;" />
+
+> *结算页包含收货地址确认、预计送达时间、商家信息、商品清单（名称/数量/小计）、包装费/配送费明细、优惠券入口、订单备注及最终实付金额*  
+> *결제 페이지는 배송지 확인, 예상 도착 시간, 상점 정보, 상품 목록(이름/수량/소계), 포장비/배달비 상세, 쿠폰 진입, 주문 메모 및 최종 실결제 금액 포함*
+
+### 👤 个人中心 / 마이페이지
+
+<img src="images/screenshots/profile.png" alt="个人中心 - 用户信息、订单入口、功能菜单" style="zoom:50%;" />
+
+> *个人中心展示微信登录头像昵称、我的订单四状态入口（待支付/配送中/已完成/售后）、收货地址/优惠券/收藏/客服/设置等功能入口及退出登录按钮*  
+> *마이페이지는 위챗 로그인 아바타 닉네임, 내 주문 4상태 진입(결제대기/배달중/완료/애프터서비스), 배송지/쿠폰/즐겨찾기/고객센터/설정 등 기능 진입 및 로그아웃 버튼 표시*
+
+### 📍 地址管理 / 주소 관리
+
+<img src="images/screenshots/address.png" alt="地址管理 - 地址列表与新增编辑表单" style="zoom:50%;" />
+
+> *地址管理页展示已保存地址列表（联系人/手机号/地址详情/默认标签），支持新增/编辑/删除操作，底部弹出表单含姓名、手机号、详细地址输入及默认开关*  
+> *주소 관리 페이지는 저장된 주소 목록(연락처/휴대폰번호/주소 상세/기본 태그)를 표시하며, 신규 추가/편집/삭제 작업 지원, 하단 팝업 폼에 이름, 휴대폰 번호, 상세 주소 입력 및 기본 스위치 포함*
+
+---
+
 ## 📖 使用说明 / 사용 설명
 
 ### 环境要求 / 환경 요구사항
@@ -501,6 +638,8 @@ HungryHub/
   위챗 기본 라이브러리 버전 ≥ 3.3.4
 - 已注册的微信小程序 AppID（测试可用测试号）  
   등록된 위챗 미니프로그램 AppID (테스트는 테스트 계정 사용 가능)
+- **Supabase 项目**（可选，不配置时自动降级为本地 mock 数据）  
+  **Supabase 프로젝트** (선택 사항, 미설정 시 자동으로 로컬 mock 데이터로 폴백)
 
 ### 本地运行 / 로컬 실행
 
@@ -517,10 +656,16 @@ git clone <repository-url>
 #    在 project.config.json 中将 "appid" 改为你自己的 AppID
 #    project.config.json에서 "appid"를 자신의 AppID로 변경
 
-# 5. 准备图片资源 / 이미지 리소스 준비
+# 5. (可选) 配置 Supabase / (선택) Supabase 설정
+#    编辑 utils/supabase.js，替换 SUPABASE_URL 和 SUPABASE_ANON_KEY
+#    utils/supabase.js를 편집하여 SUPABASE_URL과 SUPABASE_ANON_KEY를 교체
+#    不配置时项目自动使用 mock.js 本地数据运行
+#    미설정 시 프로젝트는 자동으로 mock.js 로컬 데이터로 실행됩니다
+
+# 6. 准备图片资源 / 이미지 리소스 준비
 #    在 images/ 目录下放入对应的图片资源（或使用占位图）
 
-# 6. 点击编译预览 / 컴파일 미리보기 클릭
+# 7. 点击编译预览 / 컴파일 미리보기 클릭
 ```
 
 ### 页面导航流程 / 페이지 네비게이션 흐름
@@ -561,20 +706,24 @@ git clone <repository-url>
 - [x] 订单管理（分类查看、支付/取消/收货）
 - [x] 个人中心（登录、订单入口、地址管理）
 - [x] 地址管理（CRUD、表单验证、默认地址）
+- [x] Supabase 后台数据接入（商家、分类、菜品表，REST API 封装）
+- [x] 优雅降级机制（Supabase 不可用时自动切换 mock 数据）
+- [x] 字段名映射（Supabase 下划线命名 → 前端驼峰命名）
+- [x] 图片懒加载优化（列表图片 `lazy-load`，覆盖首页/商家详情/搜索/订单 4 个页面共 6 处）
 - [x] 全流程模拟数据驱动
 - [x] 本地持久化存储
 
 ### 待优化 / 개선 예정
 
-- [ ] 接入真实后端 API
 - [ ] 用户注册/登录系统（JWT Token）
 - [ ] 微信支付集成（`wx.requestPayment`）
+- [ ] 订单数据接入 Supabase（替代本地 Storage）
+- [ ] 地址数据接入 Supabase（替代本地 Storage）
 - [ ] 实时订单状态推送（WebSocket）
 - [ ] 商家评分/评价系统
 - [ ] 优惠券/满减系统
 - [ ] 骑手实时位置追踪（地图组件）
 - [ ] 菜品规格选择（规格弹窗）
-- [ ] 图片懒加载优化
 - [ ] 骨架屏加载效果
 - [ ] 无障碍访问优化
 - [ ] 单元测试与 E2E 测试
