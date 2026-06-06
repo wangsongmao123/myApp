@@ -3,7 +3,8 @@ App({
     userInfo: null,
     cart: {},
     currentShop: null,
-    address: null
+    address: null,
+    location: null  // { name, latitude, longitude, address }
   },
 
   onLaunch() {
@@ -16,6 +17,17 @@ App({
     if (address) {
       this.globalData.address = address;
     }
+    // 恢复上次定位信息
+    const location = wx.getStorageSync('location');
+    if (location) {
+      this.globalData.location = location;
+    }
+  },
+
+  // 设置定位信息并持久化
+  setLocation(location) {
+    this.globalData.location = location;
+    wx.setStorageSync('location', location);
   },
 
   // 添加商品到购物车

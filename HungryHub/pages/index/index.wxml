@@ -5,7 +5,8 @@
     <view class="location" bindtap="getLocation">
       <image class="location-icon" src="/images/location.png" mode="aspectFit"></image>
       <text class="location-text">{{location}}</text>
-      <image class="arrow-icon" src="/images/arrow-down.png" mode="aspectFit"></image>
+      <image class="arrow-icon" src="/images/arrow-down.png" mode="aspectFit" wx:if="{{!locationLoading}}"></image>
+      <text class="location-loading" wx:if="{{locationLoading}}">⟳</text>
     </view>
     <view class="search-box" bindtap="goSearch">
       <image class="search-icon" src="/images/search.png" mode="aspectFit"></image>
