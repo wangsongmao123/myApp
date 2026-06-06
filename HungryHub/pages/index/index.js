@@ -1,5 +1,6 @@
 // pages/index/index.js
-const { shops } = require('../../utils/mock');
+const { shops: mockShops } = require('../../utils/mock');
+const { getShops } = require('../../utils/supabase');
 
 Page({
   data: {
@@ -36,17 +37,40 @@ Page({
     // 每次显示页面时刷新数据
   },
 
-  // 加载商家数据
+  // 加载商家数据（优先从Supabase，失败降级到mock）
   loadShops() {
     this.setData({ loading: true });
-    // 模拟网络请求
-    setTimeout(() => {
-      this.setData({
-        allShops: shops,
-        loading: false
+
+    getShops()
+      .then(supabaseShops => {
+        // 转换 Supabase 字段名为小程序需要的驼峰格式
+        const shops = supabaseShops.map(s => ({
+          id: s.id,
+          name: s.name,
+          logo: s.logo,
+          rating: s.rating,
+          monthlySales: s.monthly_sales,
+          minPrice: s.min_price,
+          deliveryFee: s.delivery_fee,
+          deliveryTime: s.delivery_time,
+          distance: s.distance,
+          tags: s.tags,
+          notice: s.notice
+        }));
+        this.setData({
+          allShops: shops,
+          loading: false
+        });
+        this.applyFilter();
+      })
+      .catch(err => {
+        console.warn('Supabase 加载失败，降级使用 mock 数据:', err);
+        this.setData({
+          allShops: mockShops,
+          loading: false
+        });
+        this.applyFilter();
       });
-      this.applyFilter();
-    }, 500);
   },
 
   // 获取位置

@@ -1,5 +1,6 @@
 // pages/shop/shop.js
-const { shops } = require('../../utils/mock');
+const { shops: mockShops } = require('../../utils/mock');
+const { getShopById, getCategories, getFoods } = require('../../utils/supabase');
 const app = getApp();
 
 Page({
@@ -24,16 +25,62 @@ Page({
     this.refreshCart();
   },
 
-  // 加载商家数据
+  // 加载商家数据（优先从Supabase，失败降级到mock）
   loadShop(shopId) {
-    const shop = shops.find(s => s.id === shopId);
-    if (shop) {
-      this.setData({ shop });
-      app.globalData.currentShop = shop;
-    } else {
-      wx.showToast({ title: '商家不存在', icon: 'none' });
-      setTimeout(() => wx.navigateBack(), 1500);
-    }
+    wx.showLoading({ title: '加载中...' });
+
+    Promise.all([
+      getShopById(shopId),
+      getCategories(shopId),
+      getFoods(shopId)
+    ])
+      .then(([supabaseShop, supabaseCates, supabaseFoods]) => {
+        if (!supabaseShop) {
+          throw new Error('商家不存在');
+        }
+
+        // 转换 Supabase 字段名
+        const shop = {
+          id: supabaseShop.id,
+          name: supabaseShop.name,
+          logo: supabaseShop.logo,
+          rating: supabaseShop.rating,
+          monthlySales: supabaseShop.monthly_sales,
+          minPrice: supabaseShop.min_price,
+          deliveryFee: supabaseShop.delivery_fee,
+          deliveryTime: supabaseShop.delivery_time,
+          distance: supabaseShop.distance,
+          tags: supabaseShop.tags,
+          notice: supabaseShop.notice,
+          categories: supabaseCates.map(c => c.name),
+          foods: supabaseFoods.map(f => ({
+            id: f.id,
+            name: f.name,
+            price: f.price,
+            sales: f.sales,
+            img: f.img,
+            desc: f.description,
+            cate: f.category_name
+          }))
+        };
+
+        this.setData({ shop });
+        app.globalData.currentShop = shop;
+        wx.hideLoading();
+      })
+      .catch(err => {
+        console.warn('Supabase 加载失败，降级使用 mock 数据:', err);
+        // 降级到 mock 数据
+        const shop = mockShops.find(s => s.id === shopId);
+        if (shop) {
+          this.setData({ shop });
+          app.globalData.currentShop = shop;
+        } else {
+          wx.showToast({ title: '商家不存在', icon: 'none' });
+          setTimeout(() => wx.navigateBack(), 1500);
+        }
+        wx.hideLoading();
+      });
   },
 
   // 切换分类
