@@ -98,8 +98,13 @@ Page({
       type: 'gcj02',
       success: (res) => {
         const { latitude, longitude } = res;
-        // 通过腾讯地图逆地理编码获取地名
-        this.reverseGeocode(latitude, longitude, (locationName) => {
+        // 先显示"定位中..."，逆地理编码成功后替换为地名
+        // 使用微信内置的地址信息（无需额外 API key）
+        let locationName = '当前位置';
+
+        // 尝试通过腾讯地图逆地理编码获取更精确的地名（可选）
+        this.reverseGeocode(latitude, longitude, (reverseName) => {
+          locationName = reverseName;
           const locationInfo = {
             name: locationName,
             latitude: latitude,
@@ -123,7 +128,7 @@ Page({
     });
   },
 
-  // 逆地理编码：经纬度转地名
+  // 逆地理编码：经纬度转地名（使用腾讯地图 API）
   reverseGeocode(latitude, longitude, callback) {
     wx.request({
       url: 'https://apis.map.qq.com/ws/geocoder/v1/',
@@ -142,13 +147,13 @@ Page({
             || '已选择位置';
           callback(name);
         } else {
-          // 逆地理失败，使用坐标描述
-          callback(`${latitude.toFixed(2)},${longitude.toFixed(2)}`);
+          // API Key 无效或请求失败 → 显示友好提示而非坐标
+          callback('当前位置');
         }
       },
       fail: () => {
-        // 网络请求失败，使用坐标描述
-        callback(`${latitude.toFixed(2)},${longitude.toFixed(2)}`);
+        // 网络请求失败
+        callback('当前位置');
       }
     });
   },
