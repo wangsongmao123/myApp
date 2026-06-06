@@ -62,12 +62,10 @@
   신규 추가, 편집, 기본 주소 설정 지원, 폼 유효성 검증 (연락처 필수, 휴대폰 정규식 `/^1\d{10}$/`, 주소 필수)
 - **📦 商品清单确认 / 상품 목록 확인**：展示每项商品的名称、规格、数量、小计（预计算 `toFixed(2)`）  
   각 상품의 이름, 규격, 수량, 소계 표시 (사전 계산 `toFixed(2)`)
-- **📝 订单备注 / 주문 메모**：自由文本输入  
-  자유 텍스트 입력
+- **📝 订单备注 / 주문 메모**：自由文本输入 / 자유 텍스트 입력
 - **💰 价格明细 / 가격明细**：商品总额 + 包装费 + 配送费 - 优惠 = 实付金额，实时计算  
   상품 총액 + 포장비 + 배달비 - 할인 = 실결제 금액, 실시간 계산
-- **💳 模拟支付 / 모의 결제**：生成唯一订单号（`DD + 时间戳`），1 秒模拟提交延迟，成功后清空购物车并跳转订单页  
-  고유 주문번호 생성 (`DD + 타임스탬프`), 1초 모의 제출 지연, 성공 시 장바구니 비우고 주문 페이지로 이동
+- **💳 模拟支付 / 모의 결제**：生成唯一订单号（`DD + 时间戳`），1 秒模拟提交延迟，成功后清空购物车并跳转订单页 / 고유 주문번호 생성 (`DD + 타임스탬프`), 1초 모의 제출 지연, 성공 시 장바구니 비우고 주문 페이지로 이동
 
 ### 📋 订单管理 / 주문 관리
 
@@ -126,7 +124,7 @@ HungryHub/
 │   ├── supabase.js                 # Supabase REST API 封装（商家/菜品/分类/搜索）/ Supabase REST API 래퍼 (상점/메뉴/카테고리/검색)
 │   └── mock.js                     # 本地降级数据（6家商家 × 36道菜品 + 地址初始数据）/ 로컬 폴백 데이터 (6개 상점 × 36개 메뉴 + 초기 주소 데이터)
 │
-├── images/                         # 图片资源目录（81 张 PNG 图片）/ 이미지 리소스 디렉토리 (81장 PNG 이미지)
+├── images/                         # 图片资源目录（92 张 PNG 图片）/ 이미지 리소스 디렉토리 (92장 PNG 이미지)
 │   ├── tab-home.png / tab-home-active.png              # TabBar 首页图标 / TabBar 홈 아이콘
 │   ├── tab-order.png / tab-order-active.png            # TabBar 订单图标 / TabBar 주문 아이콘
 │   ├── tab-mine.png / tab-mine-active.png              # TabBar 我的图标 / TabBar 마이페이지 아이콘
@@ -149,37 +147,37 @@ HungryHub/
 │
 └── pages/                           # 页面目录 / 페이지 디렉토리
     ├── index/                       # 🏠 首页 / 홈
-    │   ├── index.js                 #    定位、分类、Banner、商家列表排序与加载
+    │   ├── index.js                 #    定位、分类、Banner、商家列表排序与加载 / 위치, 카테고리, 배너, 상가 리스트 정렬 및 로딩
     │   ├── index.json               #    页面配置
     │   ├── index.wxml               #    页面模板
     │   └── index.wxss               #    页面样式
     ├── shop/                        # 🏪 商家详情页 / 상점 상세
-    │   ├── shop.js                  #    菜品列表、分类导航、购物车管理
+    │   ├── shop.js                  #    菜品列表、分类导航、购物车管理 / 메뉴 리스트, 카테고리 네비게이션, 장바구니 관리
     │   ├── shop.json
     │   ├── shop.wxml
     │   └── shop.wxss
     ├── search/                      # 🔍 搜索页 / 검색
-    │   ├── search.js                #    多维度搜索、搜索历史、热门推荐
+    │   ├── search.js                #    多维度搜索、搜索历史、热门推荐 / 다차원 검색, 검색 기록, 인기 추천
     │   ├── search.json
     │   ├── search.wxml
     │   └── search.wxss
     ├── payment/                     # 💳 结算页 / 결제
-    │   ├── payment.js               #    地址确认、价格计算、订单生成
+    │   ├── payment.js               #    地址确认、价格计算、订单生成 / 주소 확인, 가격 계산, 주문 생성
     │   ├── payment.json
     │   ├── payment.wxml
     │   └── payment.wxss
     ├── address/                     # 📍 地址管理页 / 주소 관리
-    │   ├── address.js               #    地址CRUD、表单验证、弹窗编辑
+    │   ├── address.js               #    地址CRUD、表单验证、弹窗编辑 / 주소 CRUD, 폼 검증, 팝업 편집
     │   ├── address.json
     │   ├── address.wxml
     │   └── address.wxss
     ├── order/                       # 📋 订单页 (TabBar) / 주문 (TabBar)
-    │   ├── order.js                 #    订单Tab筛选、支付/取消/收货操作
+    │   ├── order.js                 #    订单Tab筛选、支付/取消/收货操作 / 주문 Tab 필터, 결제/취소/수령 작업
     │   ├── order.json
     │   ├── order.wxml
     │   └── order.wxss
     └── mine/                        # 👤 个人中心 (TabBar) / 마이페이지 (TabBar)
-        ├── mine.js                  #    用户登录、订单统计、退出登录
+        ├── mine.js                  #    用户登录、订单统计、退出登录 / 사용자 로그인, 주문 통계, 로그아웃
         ├── mine.json
         ├── mine.wxml
         └── mine.wxss
@@ -191,13 +189,13 @@ HungryHub/
 
 | 页面 / 페이지 | 路由 / 라우트 | 类型 / 유형 | 参数 / 파라미터 | 说明 / 설명 |
 |:---|:---|:---|:---|:---|
-| 首页 / 홈 | `pages/index/index` | TabBar | - | 默认首页，3 个 Tab 之一 |
+| 首页 / 홈 | `pages/index/index` | TabBar | - | 默认首页，3 个 Tab 之一 / 기본 홈, 3개 Tab 중 하나 |
 | 商家详情 / 상점 상세 | `pages/shop/shop` | 普通 / 일반 | `?id={shopId}` | `wx.navigateTo` 跳转 |
-| 搜索 / 검색 | `pages/search/search` | 普通 / 일반 | `?keyword={关键词}` | 支持首页分类/搜索框跳入 |
-| 结算 / 결제 | `pages/payment/payment` | 普通 / 일반 | `?shopId={shopId}` | 从购物车"去结算"跳转 |
-| 地址管理 / 주소 관리 | `pages/address/address` | 普通 / 일반 | - | 从结算页或我的页跳转 |
-| 订单 / 주문 | `pages/order/order` | TabBar | - | TabBar 页面，支持 `orderTab` 存储定位 |
-| 我的 / 마이페이지 | `pages/mine/mine` | TabBar | - | TabBar 页面 |
+| 搜索 / 검색 | `pages/search/search` | 普通 / 일반 | `?keyword={关键词}` | 支持首页分类/搜索框跳入 / 홈 카테고리/검색창에서 진입 지원 |
+| 结算 / 결제 | `pages/payment/payment` | 普通 / 일반 | `?shopId={shopId}` | 从购物车"去结算"跳转 / 장바구니 "결제하기"에서 이동 |
+| 地址管理 / 주소 관리 | `pages/address/address` | 普通 / 일반 | - | 从结算页或我的页跳转 / 결제 페이지 또는 마이페이지에서 이동 |
+| 订单 / 주문 | `pages/order/order` | TabBar | - | TabBar 页面，支持 `orderTab` 存储定位 / TabBar 페이지, orderTab 저장 위치 지정 지원 |
+| 我的 / 마이페이지 | `pages/mine/mine` | TabBar | - | TabBar 页面 / TabBar 페이지 |
 
 **导航方法 / 네비게이션 메서드：**
 - `wx.switchTab()` — TabBar 页面间跳转 / TabBar 페이지 간 이동
@@ -210,7 +208,7 @@ HungryHub/
 
 ### 购物车系统 / 장바구니 시스템
 
-购物车数据存储在 `app.globalData.cart` 中，结构如下：
+购物车数据存储在 `app.globalData.cart` 中，结构如下： / 장바구니 데이터는 app.globalData.cart에 저장되며 구조는 다음과 같습니다:
 
 ```javascript
 // 数据结构 / 데이터 구조
@@ -276,10 +274,11 @@ HungryHub/
 
 ### 地址管理系统 / 주소 관리 시스템
 
-- 存储键：`wx.Storage` 中 `addresses`（地址列表）和 `address`（当前选中地址）
-- 表单验证：联系人非空、手机号正则 `/^1\d{10}$/`（中国大陆手机号）、地址非空
-- 默认地址逻辑：设为默认时取消其他默认；首个地址自动设为默认
-- 地址数据通过 `app.globalData.address` 和 Storage 双层同步
+
+- 存储键：`wx.Storage` 中 `addresses`（地址列表）和 `address`（当前选中地址） / 저장 키: wx.Storage 내 addresses(주소 리스트) 및 address(현재 선택된 주소)
+- 表单验证：联系人非空、手机号正则 `/^1\d{10}$/`（中国大陆手机号）、地址非空 / 폼 검증: 연락처 필수, 휴대폰 정규식 `/^1\d{10}$/`(중국 본토 휴대폰), 주소 필수
+- 默认地址逻辑：设为默认时取消其他默认；首个地址自动设为默认 / 기본 주소 로직: 기본 설정 시 다른 기본 해제; 첫 번째 주소 자동 기본 설정
+- 地址数据通过 `app.globalData.address` 和 Storage 双层同步 / 주소 데이터는 app.globalData.address와 Storage 이중 계층 동기화
 
 ---
 
@@ -349,11 +348,11 @@ HungryHub/
 
 | 技术 / 기술 | 版本 / 버전 | 用途 / 용도 |
 |:---|:---|:---|
-| **微信小程序原生框架** / 위챗 미니프로그램 네이티브 | 基础库 3.3.4 | 核心运行时框架，提供 App/Page/Component 注册、生命周期管理、事件系统 |
-| **WXML** (WeiXin Markup Language) | - | 视图层模板语言，支持数据绑定 `{{}}`、条件渲染 `wx:if`/`wx:elif`/`wx:else`、列表渲染 `wx:for`/`wx:key`、事件绑定 `bind:`/`catch:`、模板 `template` |
-| **WXSS** (WeiXin Style Sheets) | - | 样式层语言，CSS 超集，支持 `rpx` 响应式像素单位（1rpx = 屏幕宽度/750）、`@import` 样式导入 |
-| **JavaScript (ES6+)** | ES6 编译 | 逻辑层语言，使用 `let/const`、箭头函数、模板字符串、解构赋值、扩展运算符、`Array` 高阶方法（`map`/`filter`/`find`/`sort`/`reduce`）、Promise 异步模式 |
-| **Babel** | 内置 | ES6+ 语法编译为兼容代码 |
+| **微信小程序原生框架** / 위챗 미니프로그램 네이티브 | 基础库 3.3.4 | 核心运行时框架，提供 App/Page/Component 注册、生命周期管理、事件系统 / 핵심 런타임 프레임워크, App/Page/Component 등록, 라이프사이클 관리, 이벤트 시스템 제공 |
+| **WXML** (WeiXin Markup Language) | - | 视图层模板语言，支持数据绑定 `{{}}`、条件渲染 `wx:if`/`wx:elif`/`wx:else`、列表渲染 `wx:for`/`wx:key`、事件绑定 `bind:`/`catch:`、模板 `template` / 뷰 계층 템플릿 언어, 데이터 바인딩, 조건 렌더링, 리스트 렌더링, 이벤트 바인딩 지원 |
+| **WXSS** (WeiXin Style Sheets) | - | 样式层语言，CSS 超集，支持 `rpx` 响应式像素单位（1rpx = 屏幕宽度/750）、`@import` 样式导入 / 스타일 계층 언어, CSS 슈퍼셋, rpx 반응형 픽셀 단위, @import 스타일 임포트 지원 |
+| **JavaScript (ES6+)** | ES6 编译 | 逻辑层语言，使用 `let/const`、箭头函数、模板字符串、解构赋值、扩展运算符、`Array` 高阶方法（`map`/`filter`/`find`/`sort`/`reduce`）、Promise 异步模式 / 로직 계층 언어, let/const, 화살표 함수, 템플릿 리터럴, 구조 분해 할당, 확산 연산자, Array 고차 메서드, Promise 비동기 패턴 사용 |
+| **Babel** | 内置 | ES6+ 语法编译为兼容代码 / ES6+ 문법을 호환 코드로 컴파일 |
 
 ### 核心 API 使用 / 핵심 API 사용
 
@@ -361,20 +360,20 @@ HungryHub/
 
 | API | 使用页面 / 사용 페이지 | 说明 / 설명 |
 |:---|:---|:---|
-| `wx.switchTab()` | order.js, mine.js | TabBar 页面间跳转 |
-| `wx.navigateTo()` | index.js, shop.js, search.js, payment.js, address.js, mine.js, order.js | 保留当前页跳转 |
-| `wx.navigateBack()` | shop.js, search.js, payment.js, address.js | 返回上一页 |
-| `wx.showToast()` | 全部页面 / 전체 페이지 | 操作反馈提示（success/none/loading 图标） |
-| `wx.showLoading()` / `wx.hideLoading()` | payment.js, order.js | 加载状态显示（模拟网络请求） |
-| `wx.showModal()` | order.js, mine.js | 确认弹窗（取消订单、退出登录、确认收货） |
-| `wx.vibrateShort()` | shop.js | 触觉反馈（添加商品时轻量震动） |
+| `wx.switchTab()` | order.js, mine.js | TabBar 页面间跳转 / TabBar 페이지 간 이동 |
+| `wx.navigateTo()` | index.js, shop.js, search.js, payment.js, address.js, mine.js, order.js | 保留当前页跳转 / 현재 페이지 유지하며 이동 |
+| `wx.navigateBack()` | shop.js, search.js, payment.js, address.js | 返回上一页 / 이전 페이지로 돌아가기 |
+| `wx.showToast()` | 全部页面 / 전체 페이지 | 操作反馈提示（success/none/loading 图标） / 작업 피드백 알림 (success/none/loading 아이콘) |
+| `wx.showLoading()` / `wx.hideLoading()` | payment.js, order.js | 加载状态显示（模拟网络请求） / 로딩 상태 표시 (모의 네트워크 요청) |
+| `wx.showModal()` | order.js, mine.js | 确认弹窗（取消订单、退出登录、确认收货） / 확인 팝업 (주문 취소, 로그아웃, 수령 확인) |
+| `wx.vibrateShort()` | shop.js | 触觉反馈（添加商品时轻量震动） / 햅틱 피드백 (상품 추가 시 경량 진동) |
 
 #### 数据存储 / 데이터 저장
 
 | API | 使用场景 / 사용 시나리오 | 存储键 / 저장 키 |
 |:---|:---|:---|
-| `wx.getStorageSync(key)` | 全局读取 | `cart`, `orders`, `addresses`, `address`, `userInfo`, `searchHistory`, `orderTab` |
-| `wx.setStorageSync(key, data)` | 全局写入 | 同上 / 상동 |
+| `wx.getStorageSync(key)` | 全局读取 / 전역 읽기 | `cart`, `orders`, `addresses`, `address`, `userInfo`, `searchHistory`, `orderTab` |
+| `wx.setStorageSync(key, data)` | 全局写入 / 전역 쓰기 | 同上 / 상동 |
 | `wx.removeStorageSync(key)` | mine.js, search.js | `userInfo`, `searchHistory` |
 
 #### 网络请求 / 네트워크 요청
@@ -388,31 +387,31 @@ HungryHub/
 
 | API | 使用页面 / 사용 페이지 | 说明 / 설명 |
 |:---|:---|:---|
-| `wx.getUserProfile()` | mine.js | 获取微信用户头像、昵称 |
-| `wx.chooseLocation()` | index.js | 打开微信原生地图选择位置 |
-| `wx.stopPullDownRefresh()` | index.js | 停止下拉刷新动画 |
+| `wx.getUserProfile()` | mine.js | 获取微信用户头像、昵称 / 위챗 사용자 아바타, 닉네임 획득 |
+| `wx.chooseLocation()` | index.js | 打开微信原生地图选择位置 / 위챗 네이티브 지도로 위치 선택 |
+| `wx.stopPullDownRefresh()` | index.js | 停止下拉刷新动画 / 풀다운 새로고침 애니메이션 정지 |
 
 #### 分享 / 공유
 
 | API | 使用页面 / 사용 페이지 | 说明 / 설명 |
 |:---|:---|:---|
-| `onShareAppMessage()` | index.js, shop.js, mine.js | 自定义分享标题和路径 |
+| `onShareAppMessage()` | index.js, shop.js, mine.js | 自定义分享标题和路径 / 사용자 정의 공유 제목 및 경로 |
 
 ### 项目配置 / 프로젝트 설정
 
 | 配置项 / 설정 항목 | 值 / 값 | 说明 / 설명 |
 |:---|:---|:---|
-| `compileType` | `miniprogram` | 编译类型为小程序 |
-| `libVersion` | `3.3.4` | 基础库最低版本 |
-| `es6` | `true` | 启用 ES6 转 ES5 |
-| `postcss` | `true` | 启用 PostCSS 样式后处理 |
-| `minified` | `true` | 启用代码压缩 |
-| `minifyWXSS` | `true` | 启用 WXSS 压缩 |
-| `minifyWXML` | `true` | 启用 WXML 压缩 |
-| `enhance` | `true` | 启用增强编译 |
-| `useMultiFrameRuntime` | `true` | 启用多帧运行时 |
-| `coverView` | `true` | 启用 cover-view 组件 |
-| `urlCheck` | `true` | 启用 URL 合法性检查 |
+| `compileType` | `miniprogram` | 编译类型为小程序 / 컴파일 유형: 미니프로그램 |
+| `libVersion` | `3.3.4` | 基础库最低版本 / 기본 라이브러리 최소 버전 |
+| `es6` | `true` | 启用 ES6 转 ES5 / ES6→ES5 변환 활성화 |
+| `postcss` | `true` | 启用 PostCSS 样式后处理 / PostCSS 스타일 후처리 활성화 |
+| `minified` | `true` | 启用代码压缩 / 코드 압축 활성화 |
+| `minifyWXSS` | `true` | 启用 WXSS 压缩 / WXSS 압축 활성화 |
+| `minifyWXML` | `true` | 启用 WXML 压缩 / WXML 압축 활성화 |
+| `enhance` | `true` | 启用增强编译 / 향상된 컴파일 활성화 |
+| `useMultiFrameRuntime` | `true` | 启用多帧运行时 / 멀티 프레임 런타임 활성화 |
+| `coverView` | `true` | 启用 cover-view 组件 / cover-view 컴포넌트 활성화 |
+| `urlCheck` | `true` | 启用 URL 合法性检查 / URL 유효성 검사 활성화 |
 
 ### 权限配置 / 권한 설정
 
@@ -420,7 +419,7 @@ HungryHub/
 {
   "permission": {
     "scope.userLocation": {
-      "desc": "你的位置信息将用于推荐附近商家"
+      "desc": "你的位置信息将用于推荐附近商家 / 위치 정보는 주변 상점 추천에 사용됩니다"
     }
   }
 }
@@ -430,14 +429,14 @@ HungryHub/
 
 | 特性 / 특성 | 实现 / 구현 | 说明 / 설명 |
 |:---|:---|:---|
-| **设计令牌 / 디자인 토큰** | 主色 `#ff6b35`（橙色系）、背景 `#f5f5f5`、文字 `#333` / `#999` | 全局统一色彩体系 |
-| **响应式单位 / 반응형 단위** | `rpx` (responsive pixel) | 基于屏幕宽度 750rpx 等比缩放 |
-| **渐变按钮 / 그라데이션 버튼** | `linear-gradient(135deg, #ff6b35, #f7931e)` | 45° 橙色渐变，圆角 40rpx |
-| **价格伪元素 / 가격 가상 요소** | `.price::before { content: '¥'; }` | CSS 伪元素自动添加货币符号 |
-| **毛玻璃效果 / 글래스모피즘** | `filter: blur(20px)` + 半透明覆盖层 | 商家详情页头部背景 |
-| **弹性布局 / 플렉스 레이아웃** | `display: flex` 广泛使用 | 列表项、按钮组、空状态等 |
-| **字体栈 / 폰트 스택** | `-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif` | 系统原生字体优先 |
-| **Sticky 定位 / 스티키 포지셔닝** | `position: sticky` | 商家分类导航吸附顶部 |
+| **设计令牌 / 디자인 토큰** | 主色 `#ff6b35`（橙色系）、背景 `#f5f5f5`、文字 `#333` / `#999` | 全局统一色彩体系 / 전역 통일 색상 체계 |
+| **响应式单位 / 반응형 단위** | `rpx` (responsive pixel) | 基于屏幕宽度 750rpx 等比缩放 / 화면 너비 750rpx 기준 비례 축소 |
+| **渐变按钮 / 그라데이션 버튼** | `linear-gradient(135deg, #ff6b35, #f7931e)` | 45° 橙色渐变，圆角 40rpx / 45° 주황 그라데이션, 둥근 모서리 40rpx |
+| **价格伪元素 / 가격 가상 요소** | `.price::before { content: '¥'; }` | CSS 伪元素自动添加货币符号 / CSS 가상 요소로 통화 기호 자동 추가 |
+| **毛玻璃效果 / 글래스모피즘** | `filter: blur(20px)` + 半透明覆盖层 | 商家详情页头部背景 / 상점 상세 페이지 헤더 배경 |
+| **弹性布局 / 플렉스 레이아웃** | `display: flex` 广泛使用 | 列表项、按钮组、空状态等 / 리스트 항목, 버튼 그룹, 빈 상태 등 |
+| **字体栈 / 폰트 스택** | `-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif` | 系统原生字体优先 / 시스템 네이티브 폰트 우선 |
+| **Sticky 定位 / 스티키 포지셔닝** | `position: sticky` | 商家分类导航吸附顶部 / 상점 카테고리 네비게이션 상단 고정 |
 
 ### 数据策略 / 데이터 전략
 
@@ -453,12 +452,12 @@ HungryHub/
 
 | 函数 / 함수 | REST 端点 / 엔드포인트 | 使用页面 / 사용 페이지 |
 |:---|:---|:---|
-| `getShops()` | `GET /rest/v1/shops?select=*&order=id.asc` | index.js (首页) |
-| `getShopById(id)` | `GET /rest/v1/shops?id=eq.{id}&select=*` | shop.js (商家详情) |
-| `getCategories(shopId)` | `GET /rest/v1/categories?shop_id=eq.{shopId}&select=*&order=sort_order.asc` | shop.js (商家详情) |
-| `getFoods(shopId)` | `GET /rest/v1/foods?shop_id=eq.{shopId}&select=*&order=id.asc` | shop.js (商家详情) |
-| `searchShops(keyword)` | `GET /rest/v1/shops?or=(name.ilike.{keyword},tags.cs.{keyword})&select=*&order=rating.desc` | search.js (搜索) |
-| `searchFoods(keyword)` | `GET /rest/v1/foods?or=(name.ilike.{keyword},description.ilike.{keyword})&select=*,shops(name,logo)&order=sales.desc` | search.js (搜索) |
+| `getShops()` | `GET /rest/v1/shops?select=*&order=id.asc` | index.js (首页) / index.js (홈) |
+| `getShopById(id)` | `GET /rest/v1/shops?id=eq.{id}&select=*` | shop.js (商家详情) / shop.js (상점 상세) |
+| `getCategories(shopId)` | `GET /rest/v1/categories?shop_id=eq.{shopId}&select=*&order=sort_order.asc` | shop.js (商家详情) / shop.js (상점 상세) |
+| `getFoods(shopId)` | `GET /rest/v1/foods?shop_id=eq.{shopId}&select=*&order=id.asc` | shop.js (商家详情) / shop.js (상점 상세) |
+| `searchShops(keyword)` | `GET /rest/v1/shops?or=(name.ilike.{keyword},tags.cs.{keyword})&select=*&order=rating.desc` | search.js (搜索) / search.js (검색) |
+| `searchFoods(keyword)` | `GET /rest/v1/foods?or=(name.ilike.{keyword},description.ilike.{keyword})&select=*,shops(name,logo)&order=sales.desc` | search.js (搜索) / search.js (검색) |
 
 #### 优雅降级机制 / 우아한 폴백 메커니즘
 
@@ -507,14 +506,14 @@ Supabase (PostgreSQL)는 snake_case를 사용하며, 프론트엔드는 camelCas
 
 | 交互 / 인터랙션 | 实现 / 구현 |
 |:---|:---|
-| 加减按钮动画 | 圆形按钮（48rpx），加号实心填充，减号空心描边，点击触发震动反馈 |
-| 购物车弹窗 | 从底部滑入，带遮罩层（`rgba(0,0,0,0.5)`），点击遮罩关闭 |
-| 分类切换 | 橙色底部下划线高亮，`scroll-into-view` 联动 |
-| 轮播图 | 自动播放 3s，圆形指示点，`circular` 循环 |
-| 空状态 | 居中大图标 + 引导文字 + 操作按钮 |
-| Toast 反馈 | 所有操作均有即时反馈提示 |
-| 加载态 | `wx.showLoading` + 延迟模拟 |
-| 确认弹窗 | 敏感操作（取消订单、退出登录、确认收货）均有二次确认 |
+| 加减按钮动画 | 圆形按钮（48rpx），加号实心填充，减号空心描边，点击触发震动反馈 / 원형 버튼(48rpx), 플러스 실심 채움, 마이너스 아웃라인, 클릭 시 진동 피드백 |
+| 购物车弹窗 | 从底部滑入，带遮罩层（`rgba(0,0,0,0.5)`），点击遮罩关闭 / 하단 슬라이드 인, 오버레이 레이어, 클릭 시 닫힘 |
+| 分类切换 | 橙色底部下划线高亮，`scroll-into-view` 联动 / 주황색 하단 밑줄 하이라이트, scroll-into-view 연동 |
+| 轮播图 | 自动播放 3s，圆形指示点，`circular` 循环 / 자동 재생 3초, 원형 도트 인디케이터, circular 순환 |
+| 空状态 | 居中大图标 + 引导文字 + 操作按钮 / 중앙 대형 아이콘 + 가이드 텍스트 + 동작 버튼 |
+| Toast 反馈 | 所有操作均有即时反馈提示 / 모든 작업에 즉시 피드백 알림 제공 |
+| 加载态 | `wx.showLoading` + 延迟模拟 / wx.showLoading + 지연 시뮬레이션 |
+| 确认弹窗 | 敏感操作（取消订单、退出登录、确认收货）均有二次确认 / 민감 작업(주문 취소, 로그아웃, 수령 확인)에 이중 확인 팝업 |
 
 ---
 
@@ -650,20 +649,17 @@ git clone <repository-url>
 # 2. 打开微信开发者工具 / 위챗 개발자 도구 열기
 
 # 3. 导入项目目录 / 프로젝트 디렉토리 가져오기
-#    项目目录选择 HungryHub 根目录
+#    项目目录选择 HungryHub 根目录 / 프로젝트 디렉토리로 HungryHub 루트 선택
 
 # 4. 修改 AppID / AppID 수정
-#    在 project.config.json 中将 "appid" 改为你自己的 AppID
-#    project.config.json에서 "appid"를 자신의 AppID로 변경
+#    在 project.config.json 中将 "appid" 改为你自己的 AppID / project.config.json에서 "appid"를 자신의 AppID로 변경
 
 # 5. (可选) 配置 Supabase / (선택) Supabase 설정
-#    编辑 utils/supabase.js，替换 SUPABASE_URL 和 SUPABASE_ANON_KEY
-#    utils/supabase.js를 편집하여 SUPABASE_URL과 SUPABASE_ANON_KEY를 교체
-#    不配置时项目自动使用 mock.js 本地数据运行
-#    미설정 시 프로젝트는 자동으로 mock.js 로컬 데이터로 실행됩니다
+#    编辑 utils/supabase.js，替换 SUPABASE_URL 和 SUPABASE_ANON_KEY / utils/supabase.js를 편집하여 SUPABASE_URL과 SUPABASE_ANON_KEY를 교체
+#    不配置时项目自动使用 mock.js 本地数据运行 / 미설정 시 프로젝트는 자동으로 mock.js 로컬 데이터로 실행됩니다
 
 # 6. 准备图片资源 / 이미지 리소스 준비
-#    在 images/ 目录下放入对应的图片资源（或使用占位图）
+#    在 images/ 目录下放入对应的图片资源（或使用占位图） / images/ 디렉토리에 해당 이미지 리소스 추가 (또는 플레이스홀더 사용)
 
 # 7. 点击编译预览 / 컴파일 미리보기 클릭
 ```
@@ -671,26 +667,26 @@ git clone <repository-url>
 ### 页面导航流程 / 페이지 네비게이션 흐름
 
 ```
-首页 (TabBar)
-  ├── 搜索框 ──> 搜索页 ──> 商家详情 ──> 结算页
-  ├── 分类入口 ──> 搜索页（带关键词）──> 商家详情 ──> 结算页
-  └── 商家列表 ──> 商家详情 ──> 结算页
+首页 (TabBar) / 홈 (TabBar)
+  ├── 搜索框 ──> 搜索页 ──> 商家详情 ──> 结算页 / 검색창 → 검색 → 상점 상세 → 결제
+  ├── 分类入口 ──> 搜索页（带关键词）──> 商家详情 ──> 结算页 / 카테고리 진입 → 검색(키워드) → 상점 상세 → 결제
+  └── 商家列表 ──> 商家详情 ──> 结算页 / 상점 리스트 → 상점 상세 → 결제
                                     │
                               ┌─────┴─────┐
-                              │  地址管理页  │
+                              │  地址管理页  │ / 주소 관리
                               └───────────┘
                                     │
-                              提交订单成功
+                              提交订单成功 / 주문 제출 성공
                                     │
-                              订单页 (TabBar)
+                              订单页 (TabBar) / 주문 (TabBar)
                                     │
-                          支付/取消/收货操作
+                          支付/取消/收货操作 / 결제/취소/수령 작업
 
-我的 (TabBar)
-  ├── 登录 ──> 微信授权
-  ├── 订单入口 ──> 订单页 (TabBar)
-  ├── 地址管理 ──> 地址管理页
-  └── 退出登录
+我的 (TabBar) / 마이페이지 (TabBar)
+  ├── 登录 ──> 微信授权 / 로그인 → 위챗 인증
+  ├── 订单入口 ──> 订单页 (TabBar) / 주문 진입 → 주문 (TabBar)
+  ├── 地址管理 ──> 地址管理页 / 주소 관리 → 주소 관리 페이지
+  └── 退出登录 / 로그아웃
 ```
 
 ---
@@ -699,35 +695,35 @@ git clone <repository-url>
 
 ### 已完成 / 완료
 
-- [x] 首页商家列表（搜索、分类、Banner、排序）
-- [x] 首页定位功能（自动 GPS 定位 + 逆地理编码 + 手动地图选点 + Haversine 距离计算 + 定位持久化 + 优雅降级）
-- [x] 商家详情页（菜品分类、购物车管理）
-- [x] 搜索功能（多维度搜索、历史记录、热门推荐）
-- [x] 下单结算（地址选择、价格计算、订单生成）
-- [x] 订单管理（分类查看、支付/取消/收货）
-- [x] 个人中心（登录、订单入口、地址管理）
-- [x] 地址管理（CRUD、表单验证、默认地址）
-- [x] Supabase 后台数据接入（商家、分类、菜品表，REST API 封装）
-- [x] 优雅降级机制（Supabase 不可用时自动切换 mock 数据）
-- [x] 字段名映射（Supabase 下划线命名 → 前端驼峰命名）
-- [x] 图片懒加载优化（列表图片 `lazy-load`，覆盖首页/商家详情/搜索/订单 4 个页面共 6 处）
-- [x] 全流程模拟数据驱动
-- [x] 本地持久化存储
+- [x] 首页商家列表（搜索、分类、Banner、排序） / 홈 상가 리스트 (검색, 카테고리, 배너, 정렬)
+- [x] 首页定位功能（自动 GPS 定位 + 逆地理编码 + 手动地图选点 + Haversine 距离计算 + 定位持久化 + 优雅降级） / 홈 위치 기능 (자동 GPS 위치 + 역지오코딩 + 수동 지도 선택 + Haversine 거리 계산 + 위치 지속화 + 우아한 폴백)
+- [x] 商家详情页（菜品分类、购物车管理） / 상가 상세 페이지 (메뉴 카테고리, 장바구니 관리)
+- [x] 搜索功能（多维度搜索、历史记录、热门推荐） / 검색 기능 (다차원 검색, 기록, 인기 추천)
+- [x] 下单结算（地址选择、价格计算、订单生成） / 주문 결제 (주소 선택, 가격 계산, 주문 생성)
+- [x] 订单管理（分类查看、支付/取消/收货） / 주문 관리 (분류 조회, 결제/취소/수령)
+- [x] 个人中心（登录、订单入口、地址管理） / 마이페이지 (로그인, 주문 진입점, 주소 관리)
+- [x] 地址管理（CRUD、表单验证、默认地址） / 주소 관리 (CRUD, 폼 검증, 기본 주소)
+- [x] Supabase 后台数据接入（商家、分类、菜品表，REST API 封装） / Supabase 백엔드 데이터 연동 (상가, 카테고리, 메뉴 테이블, REST API 캡슐화)
+- [x] 优雅降级机制（Supabase 不可用时自动切换 mock 数据） / 우아한 폴백 메커니즘 (Supabase 불가 시 자동 mock 데이터 전환)
+- [x] 字段名映射（Supabase 下划线命名 → 前端驼峰命名） / 필드명 매핑 (Supabase 스네이크케이스 → 프론트 캐멀케이스)
+- [x] 图片懒加载优化（列表图片 `lazy-load`，覆盖首页/商家详情/搜索/订单 4 个页面共 6 处） / 이미지 레이지 로드 최적화 (리스트 이미지 lazy-load, 홈/상가상세/검색/주문 4페이지 총 6처)
+- [x] 全流程模拟数据驱动 / 전체 프로세스 모의 데이터 구동
+- [x] 本地持久化存储 / 로컬 영속화 저장
 
 ### 待优化 / 개선 예정
 
-- [ ] 用户注册/登录系统（JWT Token）
-- [ ] 微信支付集成（`wx.requestPayment`）
-- [ ] 订单数据接入 Supabase（替代本地 Storage）
-- [ ] 地址数据接入 Supabase（替代本地 Storage）
-- [ ] 实时订单状态推送（WebSocket）
-- [ ] 商家评分/评价系统
-- [ ] 优惠券/满减系统
-- [ ] 骑手实时位置追踪（地图组件）
-- [ ] 菜品规格选择（规格弹窗）
-- [ ] 骨架屏加载效果
-- [ ] 无障碍访问优化
-- [ ] 单元测试与 E2E 测试
+- [ ] 用户注册/登录系统（JWT Token） / 사용자 가입/로그인 시스템 (JWT Token)
+- [ ] 微信支付集成（`wx.requestPayment`） / 위챗페이 연동 (wx.requestPayment)
+- [ ] 订单数据接入 Supabase（替代本地 Storage） / 주문 데이터 Supabase 연동 (로컬 Storage 대체)
+- [ ] 地址数据接入 Supabase（替代本地 Storage） / 주소 데이터 Supabase 연동 (로컬 Storage 대체)
+- [ ] 实时订单状态推送（WebSocket） / 실시간 주문 상태 푸시 (WebSocket)
+- [ ] 商家评分/评价系统 / 상가 평점/리뷰 시스템
+- [ ] 优惠券/满减系统 / 쿠폰/할인 시스템
+- [ ] 骑手实时位置追踪（地图组件） / 라이더 실시간 위치 추적 (지도 컴포넌트)
+- [ ] 菜品规格选择（规格弹窗） / 메뉴 규격 선택 (규격 팝업)
+- [ ] 骨架屏加载效果 / 스켈레톤 스크린 로딩 효과
+- [ ] 无障碍访问优化 / 접근성 최적화
+- [ ] 单元测试与 E2E 테스트 / 유닛 테스트 및 E2E 테스트
 
 ---
 
@@ -739,5 +735,5 @@ git clone <repository-url>
 
 <p align="center">
   <b>🍔 美味外卖 / 미식배달 — HungryHub</b><br/>
-  <sub>Made with ❤️ by WeChat MiniProgram</sub>
+  <sub>Made with ❤️ by WeChat MiniProgram / 위챗 미니프로그램으로 제작</sub>
 </p>
